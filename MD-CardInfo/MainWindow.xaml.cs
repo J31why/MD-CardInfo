@@ -185,16 +185,16 @@ namespace MD_CardInfo
         {
             try
             {
-                Func.CloseMDProcess();
+            Func.CloseMDProcess();
                 conn.Close();
-                var element = ConfigXML.Root?.Element("width");
-                if (element != null)
-                    element.Value = Width.ToString();
-                element = ConfigXML.Root?.Element("height");
-                if (element != null)
-                    element.Value = Height.ToString();
-                ConfigXML.Save(ConfigXMLPath);
-            }
+            var element = ConfigXML.Root?.Element("width");
+            if (element != null)
+                element.Value = Width.ToString();
+             element = ConfigXML.Root?.Element("height");
+            if (element != null)
+                element.Value = Height.ToString();
+            ConfigXML.Save(ConfigXMLPath);
+        }
             catch { }
         }
 
