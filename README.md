@@ -1,5 +1,5 @@
 # MD-CardInfo
-net6.0 WPF开发  游戏王大师决斗 卡查器
+net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 需要WIN10 x64环境
 
