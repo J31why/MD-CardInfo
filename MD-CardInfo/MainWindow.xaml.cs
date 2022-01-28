@@ -29,7 +29,7 @@ namespace MD_CardInfo
          static int cardid = 0;
          static Timer timer = new (150);
         static SQLite.SQLiteConnection? conn;
-        static MainViewModel vm = new MainViewModel();
+        static MainViewModel vm = new ();
         public static readonly string ConfigXMLPath = Environment.CurrentDirectory + "\\config.xml";
         public static XDocument ConfigXML { get; set; } = new();
         public MainWindow()
