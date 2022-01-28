@@ -1,7 +1,7 @@
 # MD-CardInfo
 net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
-需要WIN10 x64环境
+需要WIN10 x64环境，非独立版本需要.net6.0
 
 读取内存获取卡片ID, 通过查询专门的数据库显示卡片效果。感谢ygopro的数据库，前人栽树，后人乘凉。
 
