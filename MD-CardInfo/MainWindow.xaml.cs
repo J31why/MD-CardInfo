@@ -28,13 +28,21 @@ namespace MD_CardInfo
          static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
          static int cardid = 0;
          static Timer timer = new (150);
-        static SQLite.SQLiteConnection conn = new("cards.db");
+        static SQLite.SQLiteConnection? conn;
         static MainViewModel vm = new MainViewModel();
         public static readonly string ConfigXMLPath = Environment.CurrentDirectory + "\\config.xml";
         public static XDocument ConfigXML { get; set; } = new();
         public MainWindow()
         {
             InitializeComponent();
+            LoadConfig();
+            if (!File.Exists("cards.db"))
+            {
+                MessageBox.Show("数据库不见了。", "我数据库呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
+                Close();
+            }
+            conn = new("cards.db");
+            conn.CreateTable<DBTables.Cards>();
 
             Func.GetMDProcess();
             if (Func.gProcess is null)
@@ -42,20 +50,16 @@ namespace MD_CardInfo
                 MessageBox.Show("先开游戏吧，大臭猪。", "我游戏呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
                 Close();
             }
+
             Func.GetGameAssembly();
             Func.OpenMDProcess();
 
-            if (!File.Exists("cards.db"))
-            {
-                MessageBox.Show("数据库不见了。", "我数据库呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
-                Close();
-            }
-            conn.CreateTable<DBTables.Cards>();
+
 
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
 
-            LoadConfig();
+
 
 
 
@@ -82,7 +86,6 @@ namespace MD_CardInfo
                 else
                 {
                     ConfigXML = XDocument.Load(ConfigXMLPath);
-                    if (ConfigXML.Root == null) return;
                     var e = ConfigXML.Root.Element("width");
                     if (e != null && !string.IsNullOrEmpty(e.Value))
                         Width = double.Parse(e.Value);
@@ -99,7 +102,9 @@ namespace MD_CardInfo
             }
             catch
             {
-               
+                File.Delete(ConfigXMLPath);
+                LoadConfig();
+                return;
             }
 
         }
@@ -188,13 +193,16 @@ namespace MD_CardInfo
                 timer.Stop();
                 Func.CloseMDProcess();
                 conn.Close();
-                var element = ConfigXML.Root?.Element("width");
-                if (element != null)
-                    element.Value = Width.ToString();
-                element = ConfigXML.Root?.Element("height");
-                if (element != null)
-                    element.Value = Height.ToString();
-                ConfigXML.Save(ConfigXMLPath);
+                if (File.Exists(ConfigXMLPath))
+                {
+                    var element = ConfigXML.Root?.Element("width");
+                    if (element != null)
+                        element.Value = Width.ToString();
+                    element = ConfigXML.Root?.Element("height");
+                    if (element != null)
+                        element.Value = Height.ToString();
+                    ConfigXML.Save(ConfigXMLPath);
+                }
             }
             catch { }
         }
