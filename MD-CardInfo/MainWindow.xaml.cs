@@ -26,130 +26,12 @@ namespace MD_CardInfo
 
         [DllImport("user32.dll")]
          static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
-         static int cardid = 0;
-         static Timer timer = new (150);
-        static SQLite.SQLiteConnection? conn;
-        static MainViewModel vm = new ();
-        public static readonly string ConfigXMLPath = Environment.CurrentDirectory + "\\config.xml";
-        public static XDocument ConfigXML { get; set; } = new();
+
         public MainWindow()
         {
             InitializeComponent();
-            LoadConfig();
-            if (!File.Exists("cards.db"))
-            {
-                MessageBox.Show("数据库不见了。", "我数据库呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
-                Close();
-            }
-            conn = new("cards.db");
-            conn.CreateTable<DBTables.Cards>();
-
-            Func.GetMDProcess();
-            if (Func.gProcess is null)
-            {
-                MessageBox.Show("先开游戏吧，大臭猪。", "我游戏呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
-                Close();
-            }
-
-            Func.GetGameAssembly();
-            Func.OpenMDProcess();
-
-
-
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
-
-
-
-
-
-            this.DataContext = vm;
+            this.DataContext = ViewModel.VM;
         }
-        private void LoadConfig()
-        {
-            try
-            {
-                if (!File.Exists(ConfigXMLPath))
-                {
-                    XElement root = new("Config");
-                    ConfigXML.Add(root);
-                    XElement child = new("width");
-                    root.Add(child);
-                    child = new("height");
-                    root.Add(child);
-                    child = new("fontSize");
-                    root.Add(child);
-                    child = new("topMost");
-                    root.Add(child);
-                    ConfigXML.Save(ConfigXMLPath);
-                }
-                else
-                {
-                    ConfigXML = XDocument.Load(ConfigXMLPath);
-                    var e = ConfigXML.Root.Element("width");
-                    if (e != null && !string.IsNullOrEmpty(e.Value))
-                        Width = double.Parse(e.Value);
-                    e = ConfigXML.Root.Element("height");
-                    if (e != null && !string.IsNullOrEmpty(e.Value))
-                        Height = double.Parse(e.Value);
-                    e = ConfigXML.Root.Element("fontSize");
-                    if (e != null && !string.IsNullOrEmpty(e.Value))
-                        vm.FontSize = double.Parse(e.Value);
-                    e = ConfigXML.Root.Element("topMost");
-                    if (e != null && !string.IsNullOrEmpty(e.Value))
-                        vm.topMost = bool.Parse(e.Value);
-                }
-            }
-            catch
-            {
-                File.Delete(ConfigXMLPath);
-                LoadConfig();
-                return;
-            }
-
-        }
-        private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            var id = Func.GetCardID();
-            if (id is null)
-            {
-                timer.Stop();
-                try
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        try
-                        {
-                            MessageBox.Show("检测到游戏退出", "我游戏呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
-                            Close();
-                        }
-                        catch
-                        {
-
-                        }
-                    });
-                }
-                catch { }
-
-            }
-            else if (cardid != id.Value )
-            {
-                if (id.Value % 8 != 0)
-                    Debug.WriteLine(id.Value);
-                cardid = id.Value;
-                var ret = conn.Table<DBTables.Cards>().Where(v => v.id == id);
-
-                foreach (var item in ret)
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        vm.Card = item;
-                    });
-
-                }
-            }
-        }
-
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -159,12 +41,14 @@ namespace MD_CardInfo
             if (e.ClickCount == 2)
             {
                 Border b = (Border)sender;
-                var vm = (MainViewModel)this.DataContext;
+                var vm = ViewModel.VM;
                 string name;
                 if (b.Name == "cn")
-                    name = vm.cn_name;
+                    name = vm.Card.CN_Name;
+                else if (b.Name == "en")
+                    name = vm.Card.EN_Name;
                 else
-                    name = vm.en_name;
+                    name = vm.Card.JP_Name;
                 Clipboard.SetDataObject(name);
             }
         }
@@ -182,31 +66,13 @@ namespace MD_CardInfo
             IntPtr handle = new WindowInteropHelper(this).Handle;
             int nStyle = GetWindowLong(handle, GWL_STYLE);
             nStyle &= ~(WS_MAXIMIZEBOX);
-            SetWindowLong(handle, GWL_STYLE, nStyle);
-            SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+            _ = SetWindowLong(handle, GWL_STYLE, nStyle);
+            _ = SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
         }
-
         private void Window_Closed(object sender, EventArgs e)
         {
-            try
-            {
-                timer.Stop();
-                Func.CloseMDProcess();
-                conn.Close();
-                if (File.Exists(ConfigXMLPath))
-                {
-                    var element = ConfigXML.Root?.Element("width");
-                    if (element != null)
-                        element.Value = Width.ToString();
-                    element = ConfigXML.Root?.Element("height");
-                    if (element != null)
-                        element.Value = Height.ToString();
-                    ConfigXML.Save(ConfigXMLPath);
-                }
-            }
-            catch { }
+            ViewModel.VM.Close();
         }
-
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             Hyperlink link = (Hyperlink)sender ;

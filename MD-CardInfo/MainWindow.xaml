@@ -5,19 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MD_CardInfo"
         mc:Ignorable="d"
-        Background="{Binding BGIMAGE,Mode=OneWay}"
-        d:Background="#444444"
+        Background="{Binding BG,Mode=OneTime}"
+        d:Background="White"
         Foreground="#ffF0F0F0"
         Closed="Window_Closed"
-        MinHeight="400"
-        MinWidth="300"
+        MinHeight="250"
+        MinWidth="200"
+        Height="{Binding Path=Height,Mode=TwoWay}"
+        Width="{Binding Path=Width,Mode=TwoWay}"
         Topmost="{Binding ElementName=topmostBox,Path=IsChecked,Mode=OneWay}"
+        UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         WindowStyle="None" AllowsTransparency="True"
-        Title="MD-CardInfo" Height="600" Width="360">
+        Title="MD-CardInfo" >
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="WindowChrome.WindowChrome">
@@ -89,39 +92,39 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="ScrollBarThumb"
-       TargetType="{x:Type Thumb}">
+               TargetType="{x:Type Thumb}">
             <Setter Property="SnapsToDevicePixels"
-          Value="True" />
+                    Value="True" />
             <Setter Property="OverridesDefaultStyle"
-          Value="true" />
+                    Value="true" />
             <Setter Property="Focusable"
-          Value="false" />
+                    Value="false" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
                         <Border CornerRadius="5"
-                Background="{TemplateBinding Background}"
-                BorderThickness="0" />
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="0" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style TargetType="{x:Type ScrollBar}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Width"     Value="15"/>
+            <Setter Property="Width"   Value="12"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate >
                         <Grid >
 
                             <Border 
-            CornerRadius="5"
-            Background="#30FFFFFF" />
+                                CornerRadius="5"
+                                Background="#30FFFFFF" />
                             <Track x:Name="PART_Track"
-           IsDirectionReversed="true">
+                                   IsDirectionReversed="true">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource ScrollBarThumb}"
-               Background="#FFA0A0A0" />
+                                           Background="#FFA0A0A0" />
 
 
                                 </Track.Thumb>
@@ -135,25 +138,26 @@
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.Resources>
-            <Style TargetType="{x:Type Border}">
-                <Setter Property="Padding" Value="5" />
-            </Style>
-        </Grid.Resources>
         <UniformGrid Grid.Row="2"  Rows="1">
             <UniformGrid.Resources>
                 <Style TargetType="{x:Type RadioButton}">
                     <Setter Property="FontSize" Value="{Binding TitleFontSize,Mode=OneWay}" />
-                    <Setter Property="Padding" Value="5" />
                     <Setter Property="Foreground" Value="#FFD0D0D0" />
-                    <Setter Property="Margin" Value="0 10" />
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="MaxWidth" Value="120"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type RadioButton}">
                                 <Grid>
-                                    <Path x:Name="path" Data="M 0,10 10,0 120,0 120,35 110,45 0,45 0,10 z"  Stroke="#ffa0a0a0"  StrokeThickness="2" VerticalAlignment="Center" 
+                                    <Path x:Name="path" 
+                                          Stretch="Fill"
+                                          Data="M 0,10 10,0 110,0 110,25 100,35 0,35 0,10 z"  
+                                          Stroke="#ffa0a0a0"  
+                                          StrokeThickness="2" 
+                                          VerticalAlignment="Center" 
                                           HorizontalAlignment="Center" Fill="Black"/>
                                     <ContentPresenter 
                                         VerticalAlignment="Center"
@@ -176,95 +180,230 @@
                 </Style>
             </UniformGrid.Resources>
             <RadioButton x:Name="cardInfo" IsChecked="True" Content="卡查" />
-            <RadioButton  x:Name="setting" Content="设置" d:IsChecked="True" />
+            <RadioButton  x:Name="deckInfo" Content="卡组"  />
+            <RadioButton  x:Name="setting" Content="设置" />
         </UniformGrid>
-        <Grid Margin="10 20 10 0" Visibility="{Binding ElementName=cardInfo,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=OneWay}">
+        <Grid Margin="10 15 10 0" Visibility="{Binding ElementName=cardInfo,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Background="#c0000000" >
-                <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" x:Name="cn">
-                    <TextBlock d:Text="百兽王 贝希摩斯" FontSize="{Binding TitleFontSize,Mode=OneWay}" TextTrimming="CharacterEllipsis" Text="{Binding cn_name,Mode=OneWay}" />
+                <Border 
+                    x:Name="cn"  
+                    Padding="5 5 5 0"
+                    MouseLeftButtonDown="Border_MouseLeftButtonDown" >
+                    <TextBlock 
+                        FontSize="{Binding TitleFontSize,Mode=OneWay}" 
+                        TextTrimming="CharacterEllipsis"
+                        Text="{Binding Card.CN_Name,Mode=OneWay}" />
                     <Border.ToolTip>
-                        <TextBlock Text="双击左键可复制卡片名" FontSize="{Binding FontSize,Mode=OneWay}"/>
+                        <TextBlock Text="双击左键可复制卡片名" 
+                                   FontSize="{Binding FontSize,Mode=OneWay}"/>
                     </Border.ToolTip>
                 </Border>
-                <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" x:Name="en">
-                    <TextBlock d:Text="Behemoth the King of All Animals" FontSize="{Binding TitleFontSize,Mode=OneWay}" 
-                               Text="{Binding en_name,Mode=OneWay}"
-                               TextTrimming="CharacterEllipsis" />
+                <Border  
+                    x:Name="jp"
+                    Padding="5 5 5 0"
+                    Visibility="{Binding ShowJPName ,Converter={StaticResource BooleanToVisibilityConverter},Mode=OneWay}"
+                    MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <TextBlock 
+                        FontSize="{Binding FontSize,Mode=OneWay}" 
+                        Text="{Binding Card.JP_Name,Mode=OneWay}"
+                        TextTrimming="CharacterEllipsis" />
                     <Border.ToolTip>
                         <TextBlock Text="双击左键可复制卡片名" FontSize="{Binding FontSize ,Mode=OneWay}"/>
                     </Border.ToolTip>
                 </Border>
-                <Border >
+                <Border 
+                    x:Name="en" 
+                    Padding="5 5 5 0"
+                    Visibility="{Binding ShowENName ,Converter={StaticResource BooleanToVisibilityConverter},Mode=OneWay}"
+                    MouseLeftButtonDown="Border_MouseLeftButtonDown" >
+                    <TextBlock
+                        FontSize="{Binding FontSize,Mode=OneWay}" 
+                        Text="{Binding Card.EN_Name,Mode=OneWay}"
+                        TextTrimming="CharacterEllipsis" />
+                    <Border.ToolTip>
+                        <TextBlock Text="双击左键可复制卡片名" FontSize="{Binding FontSize ,Mode=OneWay}"/>
+                    </Border.ToolTip>
+                </Border>
+
+                <Border    Padding="5 5 5 0">
                     <TextBlock FontSize="{Binding FontSize,Mode=OneWay}" 
-                               Visibility="{Binding visibility,Mode=OneWay}"
+                               Visibility="{Binding Card.IsMonster, Mode=OneWay}"
                                TextTrimming="CharacterEllipsis">
-                        <Run d:Text="★7" Text="{Binding level,Mode=OneWay}"/>
-                        <Separator Width="5" Background="Transparent"/>
-                        <Run d:Text="3000" Text="{Binding atk,Mode=OneWay}"/>
+                        <Run d:Text="★7" Text="{Binding Card.Level,Mode=OneWay}"/>
+                        <Separator Width="5" Background="Transparent" />
+                        <Run d:Text="3000" Text="{Binding Card.Atk,Mode=OneWay}"/>
                         <Run Text="/"/>
-                        <Run d:Text="3000" Text="{Binding def,Mode=OneWay}"/>
+                        <Run d:Text="3000" Text="{Binding Card.Def,Mode=OneWay}"/>
                     </TextBlock>
                 </Border>
-                <Border >
-                    <TextBlock FontSize="{Binding FontSize}" TextTrimming="CharacterEllipsis">
-                        <Run d:Text="怪兽|效果" Text="{Binding type,Mode=OneWay}"/>
-                        <Separator Width="10" Background="Transparent"/>
-                        <TextBlock  Visibility="{Binding visibility,Mode=OneWay}">
-                            <Run d:Text="兽" Text="{Binding race,Mode=OneWay}"/>
-                            <Run Text="/"/>
-                            <Run d:Text="光" Text="{Binding attribute,Mode=OneWay}"/>
+                <Border    Padding="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="{Binding FontSize,Mode=OneWay}" 
+                                   TextTrimming="CharacterEllipsis" d:Text="怪兽|效果" >
+                            <Run Text="{Binding  Card.Type,Mode=OneWay}"/>
                         </TextBlock>
-
-                    </TextBlock>
+                        <TextBlock  FontSize="{Binding FontSize,Mode=OneWay}" 
+                                    Margin="20 0"
+                                    Visibility="{Binding Card.IsMonster,Mode=OneWay}" 
+                                    TextTrimming="CharacterEllipsis" >
+                            <Run d:Text="兽" Text="{Binding Card.Race,Mode=OneWay}"/>
+                            <Run Text="/"/>
+                            <Run d:Text="光" Text="{Binding Card.Attribute,Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
                 </Border>
             </StackPanel>
-            <Border Grid.Row="1" Margin="0 10 0 0" Background="#C0000000">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"  >
-                    <Border MouseLeftButtonDown="Window_MouseLeftButtonDown">
-                        <TextBlock FontSize="{Binding FontSize}"  TextWrapping="Wrap"
-                               LineHeight="{Binding TitleFontSize}" 
-                               Text="{Binding desc,Mode=OneWay}"
-                               d:Text="这张卡可以用1只怪兽做祭品通常召唤。那个场合，这张卡的原本攻击力变为2000。祭品召唤成功时，和做祭品的怪兽同数量的自己墓地的兽族怪兽可以回到持有者的手卡。" />
+            <Border Grid.Row="1" Margin="0 5 0 0" Background="#C0000000">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"  Margin="5">
+                    <Border MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="Transparent">
+                        <TextBlock 
+                            FontSize="{Binding FontSize}"  
+                            TextWrapping="Wrap"
+                            LineHeight="{Binding TitleFontSize}" 
+                            Text="{Binding Card.Desc,Mode=OneWay}"
+                            d:Text="这张卡可以用1只怪兽做祭品通常召唤。那个场合，这张卡的原本攻击力变为2000。祭品召唤成功时，和做祭品的怪兽同数量的自己墓地的兽族怪兽可以回到持有者的手卡。" />
                     </Border>
          
                 </ScrollViewer>
             </Border>
         </Grid>
-
-        <Grid Margin="10 20 10 0" Visibility="{Binding ElementName=setting,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}" Background="#A0000000">
-            <StackPanel Margin="10">
-                <CheckBox x:Name="topmostBox" 
-                          Content="窗口置顶" 
-                          VerticalContentAlignment="Center"
-                          Foreground="White" 
-                          IsChecked="{Binding topMost}"
-                          FontSize="{Binding FontSize,Mode=OneWay}"/>
-                <DockPanel Margin="0 5">
-                    <TextBlock FontSize="{Binding FontSize,Mode=OneWay}" Text="字体大小：" VerticalAlignment="Center"/>
-                    <TextBox Margin="5 0" 
-                             MinHeight="25" VerticalContentAlignment="Center" 
-                             Text="{Binding FontSize}" 
-                             FontSize="{Binding FontSize,Mode=OneWay}" InputMethod.IsInputMethodEnabled="False" />
-
-                </DockPanel>
-
-            </StackPanel>
-            <StackPanel VerticalAlignment="Bottom">
-                <TextBlock TextWrapping="Wrap" FontSize="{Binding FontSize,Mode=OneWay}"  Text="免责声明：本软件免费开源无毒，使用本软件的一切后果概不负责，与本软件作者无关。本软件尊重所有用户的个人隐私，不会窃取任何个人信息。"/>
-                <TextBlock TextWrapping="Wrap" FontSize="{Binding FontSize,Mode=OneWay}"  Text="感谢以下开源软件：sqlite_net、sqlite"/>
-                <TextBlock TextWrapping="Wrap" FontSize="{Binding FontSize,Mode=OneWay}"  Text="感谢ygopro数据库。"/>
-                <TextBlock FontSize="{Binding FontSize,Mode=OneWay}" >
-                    <Hyperlink NavigateUri="https://www.acfun.cn/u/353448" Click="Hyperlink_Click" >作者主页</Hyperlink>
-                    
-                         <Hyperlink NavigateUri="https://github.com/J31why/MD-CardInfo" Click="Hyperlink_Click" >开源页面</Hyperlink>
-                </TextBlock>
-            </StackPanel>
-
+        <Grid Margin="10 15 10 0" 
+              Visibility="{Binding ElementName=deckInfo,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}" 
+              Background="#C0000000" >
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter  Property="Margin" Value="5"/>
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Foreground" Value="#FFD0D0D0" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid>
+                                    <Path x:Name="path" 
+                                          Stretch="Fill"
+                                          Data="M 0,10 10,0 110,0 110,25 100,35 0,35 0,10 z"  
+                                          Stroke="#ffa0a0a0"  
+                                          StrokeThickness="2" 
+                                          VerticalAlignment="Center" 
+                                          HorizontalAlignment="Center" Fill="Black"/>
+                                    <ContentPresenter 
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        RecognizesAccessKey="True" Margin="5" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="path" Property="Stroke" Value="#bdeb00"/>
+                                        <Setter Property="Foreground" Value="White" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="path" Property="Stroke" Value="#7dab00"/>
+                                        <Setter Property="Foreground" Value="White" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition   Height="*"/>
+                <RowDefinition   Height="auto"/>
+                <RowDefinition   Height="auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid TextElement.FontSize="{Binding FontSize,Mode=OneWay}" 
+                      ItemsSource="{Binding LoadedDeck}" 
+                      CanUserSortColumns="True"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns >
+                    <DataGridTextColumn Header="序号" Binding="{Binding Index}"/>
+                    <DataGridTextColumn Header="类型" Binding="{Binding Type_2}"/>
+                    <DataGridTextColumn Header="中文卡名" Width="*" Binding="{Binding CN_Name}"/>
+                    <DataGridTextColumn Header="日文卡名" Binding="{Binding JP_Name}"/>
+                    <DataGridTextColumn Header="英文卡名" Binding="{Binding EN_Name}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <UniformGrid Grid.Row="1" Rows="1">
+                <Button Content="载入卡组文件" MaxWidth="150" Command="{Binding LoadFileDeck}">
+                    <Button.ToolTip>
+                        <TextBlock Text="载入ygopro卡组文件，不会显示MD不存在的卡片" FontSize="{Binding FontSize ,Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Content="读取游戏卡组" MaxWidth="150" Command="{Binding LoadGameDeck}">
+                    <Button.ToolTip>
+                        <TextBlock Text="游戏必须在卡组编辑页面才能顺利读取卡组" FontSize="{Binding FontSize ,Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Content="保存当前卡组" MaxWidth="150" Command="{Binding SaveDeck}">
+                    <Button.ToolTip>
+                        <TextBlock Text="保存列表卡组为ygopro卡组文件" FontSize="{Binding FontSize ,Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+            </UniformGrid>
+            <Button Content="写入卡组到游戏" Grid.Row="2" MaxWidth="200" Command="{Binding WriteGameDeck}">
+                <Button.ToolTip>
+                    <TextBlock Text="游戏必须在卡组编辑页面才能顺利写入卡组" FontSize="{Binding FontSize ,Mode=OneWay}"/>
+                </Button.ToolTip>
+            </Button>
         </Grid>
-
+        <Grid Margin="10 15 10 0" 
+              Visibility="{Binding ElementName=setting,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}" 
+              Background="#C0000000" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                <Border MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="Transparent">
+                    <StackPanel >
+                        <CheckBox x:Name="topmostBox" 
+                                  Content="窗口置顶" 
+                                  HorizontalAlignment="Left"
+                                  VerticalContentAlignment="Center"
+                                  Foreground="White" 
+                                  Margin="0 5 0 0"
+                                  IsChecked="{Binding TopMost}"
+                                  FontSize="{Binding FontSize,Mode=OneWay}"/>
+                        <CheckBox x:Name="showJpNameBox" 
+                                  Content="显示日文卡名" 
+                                  VerticalContentAlignment="Center"
+                                  Foreground="White" 
+                                  HorizontalAlignment="Left"
+                                  Margin="0 5 0 0"
+                                  IsChecked="{Binding ShowJPName}"
+                                  FontSize="{Binding FontSize,Mode=OneWay}"/>
+                        <CheckBox x:Name="showEnNameBox" 
+                                  Content="显示英文卡名" 
+                                  HorizontalAlignment="Left"
+                                  VerticalContentAlignment="Center"
+                                  Foreground="White" 
+                                  Margin="0 5 0 0"
+                                  IsChecked="{Binding ShowENName}"
+                                  FontSize="{Binding FontSize,Mode=OneWay}"/>
+                        <DockPanel Margin="0 5">
+                            <TextBlock FontSize="{Binding FontSize,Mode=OneWay}" Text="字体大小：" VerticalAlignment="Center"/>
+                            <TextBox Margin="5 0" 
+                                     Background="#D0FFFFFF" 
+                                     BorderThickness="0"
+                                     MinHeight="25" VerticalContentAlignment="Center" 
+                                     Text="{Binding FontSize}" 
+                                     FontSize="{Binding FontSize,Mode=OneWay}" InputMethod.IsInputMethodEnabled="False" />
+                        </DockPanel>
+                        <!--About-->
+                        <StackPanel TextElement.FontSize="14" Margin="0 20">
+                            <TextBlock TextWrapping="Wrap" Text="免责声明：本软件免费开源无毒，使用本软件的一切后果概不负责，与本软件作者无关。本软件尊重所有用户的个人隐私，不会窃取任何个人信息。" />
+                            <TextBlock TextWrapping="Wrap"  Text="感谢ygopro数据库。" />
+                            <TextBlock >
+                                <Hyperlink NavigateUri="https://www.acfun.cn/u/353448" Click="Hyperlink_Click" Foreground="IndianRed" >作者主页</Hyperlink>
+                    
+                                <Hyperlink NavigateUri="https://github.com/J31why/MD-CardInfo" Click="Hyperlink_Click" Foreground="IndianRed" >开源页面</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
