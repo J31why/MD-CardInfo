@@ -338,7 +338,8 @@ namespace MD_CardInfo
             var deck =Func.GetMainDeck();
             if (deck == null)
             {
-                MessageBox.Show("请打开游戏卡组编辑界面");
+                MessageBox.Show($"请打开游戏的卡组编辑界面。",
+"读取游戏卡组", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             LoadedDeck.Clear();
@@ -346,7 +347,8 @@ namespace MD_CardInfo
             deck = Func.GetExDeck();
             if (deck == null)
             {
-                MessageBox.Show("请打开游戏卡组编辑界面");
+                MessageBox.Show($"请打开游戏的卡组编辑界面。",
+"读取游戏卡组", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             InsertCardtoDeckBycid(deck);
