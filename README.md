@@ -33,11 +33,9 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 
 # 图片
-[image]!
-(https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image3.png?raw=true)
+[image]!(https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image3.png?raw=true)
 
-[image]!
-(https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image4.png?raw=true)
+![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image4.png?raw=true)
 
 [image]!
 (https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image2.png?raw=true)
