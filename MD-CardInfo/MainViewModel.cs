@@ -59,7 +59,7 @@ namespace MD_CardInfo
             get
             {
                 if (((Type)Card.type).HasFlag(MD_CardInfo.Type.连接))
-                    return $"[LINK - {(short)Card.level}]";
+                    return $"[LINK-{(short)Card.level}]";
                 else if (((Type)Card.type).HasFlag(MD_CardInfo.Type.超量))
                     return $"[☆ {(short)Card.level}]";
                 else return $"[★ {(short)Card.level}]";
@@ -141,7 +141,6 @@ namespace MD_CardInfo
         private static readonly string DBPath = "cards.db";
         private static int CurrentCardID = 0;
         private static SQLite.SQLiteConnection? conn { get; set; }
-
         public MainViewModel()
         {
             _FontSize = 14;
@@ -155,7 +154,6 @@ namespace MD_CardInfo
             LoadFileDeck = new(LoadFileDeckCallBack);
             SaveDeck = new(SaveDeckCallBack);
             WriteGameDeck = new(WriteGameDeckCallBack);
-
             if (!File.Exists(DBPath))
             {
                 MessageBox.Show("找不到cards.db文件。", "我数据库呢？", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -328,6 +326,28 @@ namespace MD_CardInfo
             get { return _Card; }
             set { _Card = value; OnPropertyChanged(); }
         }
+        private RelayCommand? _CopyName { get; set; }
+        public RelayCommand CopyName
+        {
+            get
+            {
+                return _CopyName ??= new((object? p) =>
+                  {
+                      if (p == null) return;
+                      switch ((string)p)
+                      {
+                          case "jp":
+                              Clipboard.SetDataObject(Card.JP_Name);
+                              break;
+                          case "en":
+                              Clipboard.SetDataObject(Card.EN_Name);
+                              break;
+                          default:
+                              Clipboard.SetDataObject(Card.CN_Name);
+                              break;
+                      }
+                  });
+            } }
         public ObservableCollection<ObservableCard> LoadedDeck { get; set; } = new();
         public RelayCommand LoadGameDeck { get; set; }
         public RelayCommand LoadFileDeck { get; set; }
@@ -365,6 +385,8 @@ namespace MD_CardInfo
                 string deckText = File.ReadAllText(openFileDialog.FileName);
                 foreach (var card in deckText.Split("\n"))
                 {
+                    if (card.IndexOf("!side") != -1) 
+                        break;
                     int passcode = 0;
                     try
                     {

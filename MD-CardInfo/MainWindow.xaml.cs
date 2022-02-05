@@ -18,14 +18,10 @@ namespace MD_CardInfo
     /// </summary>
     public partial class MainWindow : Window
     {
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-         static extern int GetWindowLong(IntPtr hwnd, int nIndex);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-         static extern int SetWindowLong(IntPtr hMenu, int nIndex, int dwNewLong);
-
         [DllImport("user32.dll")]
-         static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         public MainWindow()
         {
@@ -36,22 +32,6 @@ namespace MD_CardInfo
         {
             Close();
         }
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                Border b = (Border)sender;
-                var vm = ViewModel.VM;
-                string name;
-                if (b.Name == "cn")
-                    name = vm.Card.CN_Name;
-                else if (b.Name == "en")
-                    name = vm.Card.EN_Name;
-                else
-                    name = vm.Card.JP_Name;
-                Clipboard.SetDataObject(name);
-            }
-        }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -60,14 +40,9 @@ namespace MD_CardInfo
         {
             int GWL_STYLE = -16;
             int WS_MAXIMIZEBOX = 0x00010000;
-            int SWP_NOSIZE = 0x0001;
-            int SWP_NOMOVE = 0x0002;
-            int SWP_FRAMECHANGED = 0x0020;
             IntPtr handle = new WindowInteropHelper(this).Handle;
-            int nStyle = GetWindowLong(handle, GWL_STYLE);
-            nStyle &= ~(WS_MAXIMIZEBOX);
-            _ = SetWindowLong(handle, GWL_STYLE, nStyle);
-            _ = SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+            var value = GetWindowLong(handle, GWL_STYLE);
+            _=SetWindowLong(handle, GWL_STYLE, (int)(value & ~WS_MAXIMIZEBOX));
         }
         private void Window_Closed(object sender, EventArgs e)
         {

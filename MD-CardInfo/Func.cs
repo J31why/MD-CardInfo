@@ -47,6 +47,7 @@ namespace MD_CardInfo
         public static int CardSize = 0x18;  //一张卡在内存中的大小;
         public static void GetMDProcess()
         {
+            gProcess = null;
             foreach (var p in Process.GetProcessesByName("masterduel"))
                 gProcess = p;
         }
