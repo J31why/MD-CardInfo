@@ -242,7 +242,7 @@ namespace MD_CardInfo
                 }
             }
             catch { }
-            await Task.Delay(130);
+            await Task.Delay(100);
             GetCard();
         }
         public static string? LoadXElement( string XElement)
