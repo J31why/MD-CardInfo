@@ -12,7 +12,7 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 卡包界面显示的是内存中最近载入的卡片（也就是当前卡片的前一张或后一张）。
 
-作者主页：https://www.acfun.cn/u/353448
+[作者主页](https://www.acfun.cn/u/353448)   [下载地址](https://github.com/J31why/MD-CardInfo/releases)
 
 # 功能：
 ## 1.卡片信息
