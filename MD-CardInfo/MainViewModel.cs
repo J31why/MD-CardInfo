@@ -223,18 +223,18 @@ namespace MD_CardInfo
                         Func.OpenMDProcess();
                     if (Func.pHandle != IntPtr.Zero)
                     {
-                        var tid = Func.GetCardTID();
-                        if (tid != null && conn != null)
+                        var cid = Func.GetCardCID();
+                        if (cid != null && conn != null)
                         {
-                            if (CurrentCardID != tid.Value)
+                            if (CurrentCardID != cid.Value)
                             {
-                                CurrentCardID = tid.Value;
-                                var ret = conn.Table<DBTables.Cards>().Where(v => v.tid == tid).ToList();
+                                CurrentCardID = cid.Value;
+                                var ret = conn.Table<DBTables.Cards>().Where(v => v.cid == cid).ToList();
                                 if (ret.Count > 0)
                                     Card = new ObservableCard(ret.First());
                             }
                         }
-                        else if (tid == null) 
+                        else if (cid == null) 
                         {
                             Func.gProcess = null;
                             Func.pHandle= IntPtr.Zero;

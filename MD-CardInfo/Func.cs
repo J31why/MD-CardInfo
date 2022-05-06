@@ -39,7 +39,8 @@ namespace MD_CardInfo
         public static IntPtr GameAssembly;
         public static Process? gProcess=null;
         public static IntPtr pHandle;
-        public static int[] TIDaddresses = new int[] { 0x1E81D70, 0xb8, 0, 0x18, 0x20, 0x34 };
+        public static int[] CIDaddresses = new int[] { 0x01E7C600, 0xb8, 0, 0x4c };
+        public static int[] CIDaddresses2 = new int[] { 0x01E99C18, 0xb8, 0, 0xF8,0x1E0,0x2c };
         public static int[] MainDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x18 };
         public static int[] MainDeck = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x10, 0x20 };
         public static int[] ExDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x150, 0x18 };
@@ -112,9 +113,12 @@ namespace MD_CardInfo
             return -1;
         }
 
-        public static int? GetCardTID()
+        public static int? GetCardCID()
         {
-            return ReadInt(TIDaddresses);
+            var id = ReadInt(CIDaddresses);
+            if (id == null)
+                return ReadInt(CIDaddresses2);
+            return id;
         }
         public static List<int>? GetMainDeck()
         {
