@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MD_CardInfo"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <PopupAnimation x:Key="{x:Static SystemParameters.MenuPopupAnimationKey}">None</PopupAnimation>
     </Application.Resources>
 </Application>

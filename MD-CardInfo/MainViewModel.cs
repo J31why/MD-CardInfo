@@ -150,6 +150,7 @@ namespace MD_CardInfo
             _ShowENName = true;
             _Width = 360;
             _Height = 550;
+            _IsCardInfoPage = true;
             LoadGameDeck = new(LoadGameDeckCallBack);
             LoadFileDeck = new(LoadFileDeckCallBack);
             SaveDeck = new(SaveDeckCallBack);
@@ -318,7 +319,48 @@ namespace MD_CardInfo
             get { return _Height; }
             set { _Height = value; }
         }
+        private bool _IsCardInfoPage;
 
+        public bool IsCardInfoPage
+        {
+            get { return _IsCardInfoPage; }
+            set { _IsCardInfoPage = value; 
+                OnPropertyChanged();
+                if (value)
+                {
+                    IsDeckInfoPage = false;
+                    IsSettingPage = false;
+                }
+            }
+        }
+        private bool _IsDeckInfoPage;
+
+        public bool IsDeckInfoPage
+        {
+            get { return _IsDeckInfoPage; }
+            set { _IsDeckInfoPage = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    IsCardInfoPage = false;
+                    IsSettingPage = false;
+                }
+            }
+        }
+        private bool _IsSettingPage;
+
+        public bool IsSettingPage
+        {
+            get { return _IsSettingPage; }
+            set { _IsSettingPage = value; 
+                OnPropertyChanged(); 
+                if (value)
+                {
+                    IsCardInfoPage = false;
+                     IsDeckInfoPage = false;
+                }
+            }
+        }
 
         private ObservableCard _Card;
         public ObservableCard Card
@@ -432,7 +474,7 @@ namespace MD_CardInfo
         public void WriteGameDeckCallBack(object? p)
         {
             if (LoadedDeck.Count == 0) return;
-            var Msgret=MessageBox.Show("确定把当前卡组写入游戏？\n写入过程中请勿关闭游戏！\n注意！这将修改游戏内存。", 
+            var Msgret=MessageBox.Show("确定把当前卡组写入游戏？\n这将修改游戏内存，写入过程中请勿关闭游戏！\n注意！请不要写入游戏暂未正式推出的卡片，数据库仅过滤了MD未加入的卡片（MD数据库中有此卡，但未启用）。", 
                 "写入卡组", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if(Msgret == MessageBoxResult.Yes)
             {

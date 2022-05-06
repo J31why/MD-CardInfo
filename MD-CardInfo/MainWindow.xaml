@@ -149,60 +149,19 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="卡查" IsCheckable="True" IsChecked="{Binding IsCardInfoPage}"/>
+            <MenuItem Header="卡组" IsCheckable="True" IsChecked="{Binding IsDeckInfoPage}"/>
+            <MenuItem Header="设置" IsCheckable="True" IsChecked="{Binding IsSettingPage}"/>
+        </ContextMenu>
+    </Window.ContextMenu>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <UniformGrid Grid.Row="2" Rows="1">
-            <UniformGrid.Resources>
-                <Style TargetType="{x:Type RadioButton}">
-                    <Setter Property="FontSize" Value="{Binding TitleFontSize, Mode=OneWay}" />
-                    <Setter Property="Foreground" Value="#FFD0D0D0" />
-                    <Setter Property="Margin" Value="5" />
-                    <Setter Property="FontSize" Value="16" />
-                    <Setter Property="MaxWidth" Value="120" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type RadioButton}">
-                                <Grid>
-                                    <Path
-                                        x:Name="path"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Data="M 0,10 10,0 110,0 110,25 100,35 0,35 0,10 z"
-                                        Fill="Black"
-                                        Stretch="Fill"
-                                        Stroke="#ffa0a0a0"
-                                        StrokeThickness="2" />
-                                    <ContentPresenter
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        RecognizesAccessKey="True" />
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="path" Property="Stroke" Value="#bdeb00" />
-                                        <Setter Property="Foreground" Value="White" />
-                                    </Trigger>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter TargetName="path" Property="Stroke" Value="#7dab00" />
-                                        <Setter Property="Foreground" Value="White" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </UniformGrid.Resources>
-            <RadioButton
-                x:Name="cardInfo"
-                Content="卡查"
-                IsChecked="True" />
-            <RadioButton x:Name="deckInfo" Content="卡组" />
-            <RadioButton x:Name="setting" Content="设置" />
-        </UniformGrid>
-        <Grid Margin="10,15,10,0" Visibility="{Binding ElementName=cardInfo, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+        <Grid Margin="5" Visibility="{Binding Path=IsCardInfoPage, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -214,7 +173,9 @@
                         Text="{Binding Card.CN_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
                     <Border.ToolTip>
-                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        <ToolTip StaysOpen="True">
+                            <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        </ToolTip>
                     </Border.ToolTip>
                     <Border.InputBindings>
                         <MouseBinding
@@ -232,7 +193,9 @@
                         Text="{Binding Card.JP_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
                     <Border.ToolTip>
-                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        <ToolTip StaysOpen="True">
+                            <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        </ToolTip>
                     </Border.ToolTip>
                     <Border.InputBindings>
                         <MouseBinding
@@ -250,7 +213,9 @@
                         Text="{Binding Card.EN_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
                     <Border.ToolTip>
-                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        <ToolTip StaysOpen="True">
+                            <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="双击左键可复制卡片名" />
+                        </ToolTip>
                     </Border.ToolTip>
                     <Border.InputBindings>
                         <MouseBinding
@@ -312,7 +277,7 @@
         <Grid
             Margin="10,15,10,0"
             Background="#C0000000"
-            Visibility="{Binding ElementName=deckInfo, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding Path=IsDeckInfoPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.Resources>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Margin" Value="5" />
@@ -381,7 +346,7 @@
                     Command="{Binding LoadFileDeck}"
                     Content="载入卡组文件">
                     <Button.ToolTip>
-                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="载入ygopro卡组文件，不会显示MD不存在的卡片" />
+                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="载入ygopro卡组文件，仅过滤MD未加入的卡" />
                     </Button.ToolTip>
                 </Button>
                 <Button
@@ -397,7 +362,9 @@
                     Command="{Binding SaveDeck}"
                     Content="保存当前卡组">
                     <Button.ToolTip>
-                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="保存列表卡组为ygopro卡组文件" />
+                        <ToolTip>
+                            <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="保存列表卡组为ygopro卡组文件" />
+                        </ToolTip>
                     </Button.ToolTip>
                 </Button>
             </UniformGrid>
@@ -405,16 +372,19 @@
                 Grid.Row="2"
                 MaxWidth="200"
                 Command="{Binding WriteGameDeck}"
+              ToolTipService.ShowDuration="12000" 
                 Content="写入卡组到游戏">
-                <Button.ToolTip>
-                    <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="游戏必须在卡组编辑页面才能顺利写入卡组" />
+                <Button.ToolTip  >
+                    <ToolTip>
+                        <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" Text="游戏必须在卡组编辑页面才能顺利写入卡组" />
+                    </ToolTip>
                 </Button.ToolTip>
             </Button>
         </Grid>
         <Grid
             Margin="10,15,10,0"
             Background="#C0000000"
-            Visibility="{Binding ElementName=setting, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding Path=IsSettingPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ScrollViewer Margin="5" VerticalScrollBarVisibility="Auto">
                 <Border Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown">
                     <StackPanel>
