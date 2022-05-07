@@ -10,7 +10,7 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 已知且暂时无法解决的问题: 
 
-卡包界面显示的是内存中最近载入的卡片（也就是当前卡片的前一张或后一张）。
+卡包界面无法读取卡片ID(有懂哥可以提供技术支持么)。
 
 [作者主页](https://www.acfun.cn/u/353448) | [下载地址](https://github.com/J31why/MD-CardInfo/releases) | [GITEE](https://gitee.com/J31why/MD-CardInfo)
 
