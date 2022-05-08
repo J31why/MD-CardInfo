@@ -53,7 +53,11 @@ namespace MD_CardInfo
         {
             gProcess = null;
             foreach (var p in Process.GetProcessesByName("masterduel"))
+            {
                 gProcess = p;
+                GetGameAssembly();
+                break;
+            }
         }
         public static void GetGameAssembly()
         {
@@ -76,6 +80,8 @@ namespace MD_CardInfo
         {
             if (pHandle == IntPtr.Zero) return;
             CloseHandle(pHandle);
+            pHandle = IntPtr.Zero;
+            gProcess = null;
         }
         public static int? ReadInt(int[] addrs)
         {
@@ -120,17 +126,20 @@ namespace MD_CardInfo
         {
             var id = ReadInt(DuelCID);
             if (id != null) return id;
-            id = ReadInt(EditCID);
-            if (id != null) return id;
-   
-           var index= ReadInt(CheckCardIndex);
-            if (index.HasValue)
+
+            var index = ReadInt(CheckCardIndex);
+            if (index != null)
             {
                 var addrs = (int[])CheckCardArray.Clone();
                 addrs[addrs.Length - 1] = (int)(CheckCardArray[CheckCardArray.Length - 1] + index * 4);
-                 id = ReadInt(addrs);
+                id = ReadInt(addrs);
                 return id;
             }
+
+            id = ReadInt(EditCID);
+            if (id != null) return id;
+   
+
             return null;
         }
         public static List<int>? GetMainDeck()

@@ -212,33 +212,24 @@ namespace MD_CardInfo
         {
             try
             {
-                if (Func.gProcess == null || Func.gProcess.HasExited)
-                {
+                if (Func.gProcess == null)
                     Func.GetMDProcess();
-                    Func.GetGameAssembly();
-                }
-                if (Func.gProcess != null)
+                else
                 {
                     if (Func.pHandle == IntPtr.Zero)
                         Func.OpenMDProcess();
                     if (Func.pHandle != IntPtr.Zero)
                     {
                         var cid = Func.GetCardCID();
-                        if (cid != null && conn != null)
+                        if (cid != null && conn != null && CurrentCardID != cid.Value)
                         {
-                            if (CurrentCardID != cid.Value)
-                            {
-                                CurrentCardID = cid.Value;
-                                var ret = conn.Table<DBTables.Cards>().Where(v => v.cid == cid).ToList();
-                                if (ret.Count > 0)
-                                    Card = new ObservableCard(ret.First());
-                            }
+                            CurrentCardID = cid.Value;
+                            var ret = conn.Table<DBTables.Cards>().Where(v => v.cid == cid).ToList();
+                            if (ret.Count > 0)
+                                Card = new ObservableCard(ret.First());
                         }
-                        else if (cid == null) 
-                        {
-                            Func.gProcess = null;
-                            Func.pHandle= IntPtr.Zero;
-                        }
+                        else if (Func.gProcess.HasExited) 
+                            Func.CloseMDProcess();
                     }
                 }
             }
