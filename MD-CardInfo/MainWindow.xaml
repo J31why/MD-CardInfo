@@ -32,7 +32,7 @@
                         CornerRadius="0"
                         GlassFrameThickness="0"
                         NonClientFrameEdges="None"
-                        ResizeBorderThickness="12"
+                        ResizeBorderThickness="8"
                         UseAeroCaptionButtons="False" />
                 </Setter.Value>
             </Setter>
@@ -41,13 +41,13 @@
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Border
                             x:Name="RootBorder"
-                            Padding="12"
+                            Padding="8"
                             BorderThickness="0">
                             <Border.Effect>
                                 <DropShadowEffect
-                                    BlurRadius="12"
+                                    BlurRadius="8"
                                     Direction="0"
-                                    Opacity="0.9"
+                                    Opacity="1"
                                     ShadowDepth="0"
                                     Color="Black" />
                             </Border.Effect>
@@ -91,20 +91,6 @@
                                 </Button>
                             </Grid>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsActive" Value="False">
-                                <Setter TargetName="RootBorder" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect
-                                            BlurRadius="12"
-                                            Direction="0"
-                                            Opacity="0.5"
-                                            ShadowDepth="0"
-                                            Color="Black" />
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

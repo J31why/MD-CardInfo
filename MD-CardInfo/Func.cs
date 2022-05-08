@@ -39,8 +39,11 @@ namespace MD_CardInfo
         public static IntPtr GameAssembly;
         public static Process? gProcess=null;
         public static IntPtr pHandle;
-        public static int[] CIDaddresses = new int[] { 0x01E7C600, 0xb8, 0, 0x4c };
-        public static int[] CIDaddresses2 = new int[] { 0x01E99C18, 0xb8, 0, 0xF8,0x1E0,0x2c };
+        public static int[] CheckCardIndex = new int[] { 0x01E8A1F0, 0xb8, 0, 0x40, 0x10, 0x20, 0x110, 0x34 }; //检查卡片的序号
+        public static int[] CheckCardArray = new int[] { 0x01E8A1F0, 0xb8, 0, 0x40, 0x10, 0x20, 0x20, 0x18, 0x48, 0x10, 0x20 }; //检查卡片的数组
+
+        public static int[] DuelCID = new int[] { 0x01E7C600, 0xb8, 0, 0x4c }; //决斗界面
+        public static int[] EditCID = new int[] { 0x01E99C18, 0xb8, 0, 0xF8,0x1E0,0x2c }; //编辑界面
         public static int[] MainDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x18 };
         public static int[] MainDeck = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x10, 0x20 };
         public static int[] ExDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x150, 0x18 };
@@ -115,10 +118,20 @@ namespace MD_CardInfo
 
         public static int? GetCardCID()
         {
-            var id = ReadInt(CIDaddresses);
-            if (id == null)
-                return ReadInt(CIDaddresses2);
-            return id;
+            var id = ReadInt(DuelCID);
+            if (id != null) return id;
+            id = ReadInt(EditCID);
+            if (id != null) return id;
+   
+           var index= ReadInt(CheckCardIndex);
+            if (index.HasValue)
+            {
+                var addrs = (int[])CheckCardArray.Clone();
+                addrs[addrs.Length - 1] = (int)(CheckCardArray[CheckCardArray.Length - 1] + index * 4);
+                 id = ReadInt(addrs);
+                return id;
+            }
+            return null;
         }
         public static List<int>? GetMainDeck()
         {
