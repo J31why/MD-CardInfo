@@ -44,6 +44,8 @@ namespace MD_CardInfo
 
         public static int[] DuelCID = new int[] { 0x01E7C600, 0xb8, 0, 0x4c }; //决斗界面
         public static int[] EditCID = new int[] { 0x01E99C18, 0xb8, 0, 0xF8,0x1E0,0x2c }; //编辑界面
+        public static int[] ViewCID = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x138, 0x2c }; //卡组浏览界面
+
         public static int[] MainDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x18 };
         public static int[] MainDeck = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x148, 0x10, 0x20 };
         public static int[] ExDeckCount = new int[] { 0x01E99C18, 0xb8, 0, 0xF8, 0x1C8, 0x150, 0x18 };
@@ -138,7 +140,9 @@ namespace MD_CardInfo
 
             id = ReadInt(EditCID);
             if (id != null) return id;
-   
+
+            id = ReadInt(ViewCID);
+            if (id != null) return id;
 
             return null;
         }
