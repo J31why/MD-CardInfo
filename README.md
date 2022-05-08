@@ -8,7 +8,11 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 本软件不会主动修改任何游戏内存，仅读取内存难以被认定为作弊。
 
-[作者主页](https://www.acfun.cn/u/353448) | [github](https://github.com/J31why/MD-CardInfo) | [GITEE(推荐)](https://gitee.com/J31why/MD-CardInfo) | [gitee下载地址(推荐)](https://gitee.com/J31why/MD-CardInfo/releases)
+[作者主页](https://www.acfun.cn/u/353448) 
+
+[github](https://github.com/J31why/MD-CardInfo) | [github下载](https://github.com/J31why/MD-CardInfo/releases/)
+
+[GITEE(推荐)](https://gitee.com/J31why/MD-CardInfo) | [gitee下载地址(推荐)](https://gitee.com/J31why/MD-CardInfo/releases)
 
 # 功能：
 ## 1.卡片信息
