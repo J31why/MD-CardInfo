@@ -55,13 +55,13 @@ namespace MD_CardInfo
             foreach (var p in Process.GetProcessesByName("masterduel"))
             {
                 gProcess = p;
-                GetGameAssembly();
                 break;
             }
         }
         public static void GetGameAssembly()
         {
             if (gProcess == null) return;
+            gProcess.Refresh();
             foreach (ProcessModule pm in gProcess.Modules)
             {
                 if (pm.ModuleName == "GameAssembly.dll")

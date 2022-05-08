@@ -214,6 +214,8 @@ namespace MD_CardInfo
             {
                 if (Func.gProcess == null)
                     Func.GetMDProcess();
+                else if (Func.GameAssembly == IntPtr.Zero)
+                    Func.GetGameAssembly();
                 else
                 {
                     if (Func.pHandle == IntPtr.Zero)
@@ -228,7 +230,7 @@ namespace MD_CardInfo
                             if (ret.Count > 0)
                                 Card = new ObservableCard(ret.First());
                         }
-                        else if (Func.gProcess.HasExited) 
+                        else if (Func.gProcess.HasExited)
                             Func.CloseMDProcess();
                     }
                 }
