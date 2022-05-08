@@ -6,7 +6,7 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 读取内存获取卡片ID, 通过查询专门的数据库显示卡片效果。感谢ygopro的数据库，前人栽树，后人乘凉。
 
-本软件不会修改任何游戏内存，仅读取内存难以被认定为作弊。
+本软件不会主动修改任何游戏内存，仅读取内存难以被认定为作弊。
 
 [作者主页](https://www.acfun.cn/u/353448) | [github](https://github.com/J31why/MD-CardInfo) | [GITEE(推荐)](https://gitee.com/J31why/MD-CardInfo) | [gitee下载地址(推荐)](https://gitee.com/J31why/MD-CardInfo/releases)
 
