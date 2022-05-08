@@ -12,7 +12,7 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 [github](https://github.com/J31why/MD-CardInfo) | [github下载](https://github.com/J31why/MD-CardInfo/releases/)
 
-[GITEE(推荐)](https://gitee.com/J31why/MD-CardInfo) | [gitee下载地址(推荐)](https://gitee.com/J31why/MD-CardInfo/releases)
+[蓝奏云下载(推荐)](https://j31why.lanzouj.com/b03cy0ocb) (密码：e0ps)
 
 # 功能：
 ## 1.卡片信息
