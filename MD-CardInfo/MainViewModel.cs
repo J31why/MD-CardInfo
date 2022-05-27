@@ -214,24 +214,21 @@ namespace MD_CardInfo
             {
                 if (Func.gProcess == null)
                     Func.GetMDProcess();
+                else if (Func.gProcess.HasExited)
+                    Func.CloseMDProcess();
                 else if (Func.GameAssembly == IntPtr.Zero)
                     Func.GetGameAssembly();
+                else if (Func.pHandle == IntPtr.Zero)
+                    Func.OpenMDProcess();
                 else
                 {
-                    if (Func.pHandle == IntPtr.Zero)
-                        Func.OpenMDProcess();
-                    if (Func.pHandle != IntPtr.Zero)
+                    var cid = Func.GetCardCID();
+                    if (cid != null && conn != null && CurrentCardID != cid.Value)
                     {
-                        var cid = Func.GetCardCID();
-                        if (cid != null && conn != null && CurrentCardID != cid.Value)
-                        {
-                            CurrentCardID = cid.Value;
-                            var ret = conn.Table<DBTables.Cards>().Where(v => v.cid == cid).ToList();
-                            if (ret.Count > 0)
-                                Card = new ObservableCard(ret.First());
-                        }
-                        else if (Func.gProcess.HasExited)
-                            Func.CloseMDProcess();
+                        CurrentCardID = cid.Value;
+                        var ret = conn.Table<DBTables.Cards>().Where(v => v.cid == cid).ToList();
+                        if (ret.Count>0)
+                            Card = new ObservableCard(ret.First());
                     }
                 }
             }
@@ -519,10 +516,6 @@ namespace MD_CardInfo
             foreach (var passcode in deck)
             {
                 string passcodeStr = $"%({passcode})%";
-                if(passcode == 23995348)
-                {
-
-                }
                 var ret = conn.Query<DBTables.Cards>($"select * from [Cards] where [passcode]='{passcode}' or [ygoPasscode] like '{passcodeStr}';");
                 if (ret.Count() > 0)
                 {

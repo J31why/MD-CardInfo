@@ -41,11 +41,11 @@
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Border
                             x:Name="RootBorder"
-                            Padding="8"
+                            Padding="6"
                             BorderThickness="0">
                             <Border.Effect>
                                 <DropShadowEffect
-                                    BlurRadius="8"
+                                    BlurRadius="6"
                                     Direction="0"
                                     Opacity="1"
                                     ShadowDepth="0"
@@ -54,15 +54,12 @@
                             <Grid Background="{TemplateBinding Background}">
                                 <ContentPresenter />
                                 <Button
-                                    Padding="8,0,8,1"
+                                    Padding="4"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Click="CloseButton_Click"
-                                    Content="×"
-                                    FontSize="22"
-                                    Foreground="White"
                                     WindowChrome.IsHitTestVisibleInChrome="True">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Button}">
@@ -73,7 +70,7 @@
                                                             x:Name="border"
                                                             Padding="{TemplateBinding Padding}"
                                                             Background="{TemplateBinding Background}">
-                                                            <ContentPresenter />
+                                                            <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
                                                         </Border>
                                                         <ControlTemplate.Triggers>
                                                             <Trigger Property="IsMouseOver" Value="True">
@@ -88,6 +85,11 @@
                                             </Setter>
                                         </Style>
                                     </Button.Resources>
+                                    <Viewbox Width="14" Height="14">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="White" Data="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
+                                        </Canvas>
+                                    </Viewbox>
                                 </Button>
                             </Grid>
                         </Border>
@@ -142,12 +144,12 @@
             <MenuItem Header="设置" IsCheckable="True" IsChecked="{Binding IsSettingPage}"/>
         </ContextMenu>
     </Window.ContextMenu>
-    <Grid>
+    <Grid Margin="5" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Margin="5" Visibility="{Binding Path=IsCardInfoPage, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+        <Grid Visibility="{Binding Path=IsCardInfoPage, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -155,6 +157,7 @@
             <StackPanel Grid.Row="0" Background="#c0000000">
                 <Border x:Name="cn" Padding="5,5,5,0">
                     <TextBlock
+                        d:Text="中文卡名"
                         FontSize="{Binding TitleFontSize, Mode=OneWay}"
                         Text="{Binding Card.CN_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
@@ -171,10 +174,12 @@
                     </Border.InputBindings>
                 </Border>
                 <Border
+                    
                     x:Name="jp"
                     Padding="5,5,5,0"
                     Visibility="{Binding ShowJPName, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
                     <TextBlock
+                        d:Text="日文卡名"
                         FontSize="{Binding FontSize, Mode=OneWay}"
                         Text="{Binding Card.JP_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
@@ -195,6 +200,7 @@
                     Padding="5,5,5,0"
                     Visibility="{Binding ShowENName, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
                     <TextBlock
+                        d:Text="英文卡名"
                         FontSize="{Binding FontSize, Mode=OneWay}"
                         Text="{Binding Card.EN_Name, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis" />
@@ -209,16 +215,6 @@
                             CommandParameter="en"
                             MouseAction="LeftDoubleClick" />
                     </Border.InputBindings>
-                </Border>
-
-                <Border Padding="5,5,5,0" Visibility="{Binding Card.IsMonster, Mode=OneWay}">
-                    <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" TextTrimming="CharacterEllipsis">
-                        <Run d:Text="★7" Text="{Binding Card.Level, Mode=OneWay}" />
-                        <Separator Width="5" Background="Transparent" />
-                        <Run d:Text="3000" Text="{Binding Card.Atk, Mode=OneWay}" />
-                        <Run Text="/" />
-                        <Run d:Text="3000" Text="{Binding Card.Def, Mode=OneWay}" />
-                    </TextBlock>
                 </Border>
                 <Border Padding="5">
                     <StackPanel Orientation="Horizontal">
@@ -239,6 +235,16 @@
                         </TextBlock>
                     </StackPanel>
                 </Border>
+                <Border Padding="5 0 5 5" Visibility="{Binding Card.IsMonster, Mode=OneWay}">
+                    <TextBlock FontSize="{Binding FontSize, Mode=OneWay}" TextTrimming="CharacterEllipsis">
+                        <Run d:Text="★7" Text="{Binding Card.Level, Mode=OneWay}" />
+                        <Separator Width="5" Background="Transparent" />
+                        <Run d:Text="3000" Text="{Binding Card.Atk, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run d:Text="3000" Text="{Binding Card.Def, Mode=OneWay}" />
+                    </TextBlock>
+                </Border>
+         
             </StackPanel>
             <Border
                 Grid.Row="1"
@@ -261,7 +267,7 @@
             </Border>
         </Grid>
         <Grid
-            Margin="10,15,10,0"
+            d:Visibility="Collapsed"
             Background="#C0000000"
             Visibility="{Binding Path=IsDeckInfoPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.Resources>
@@ -368,7 +374,7 @@
             </Button>
         </Grid>
         <Grid
-            Margin="10,15,10,0"
+            d:Visibility="Collapsed"
             Background="#C0000000"
             Visibility="{Binding Path=IsSettingPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ScrollViewer Margin="5" VerticalScrollBarVisibility="Auto">
@@ -422,7 +428,7 @@
                             </TextBox>
                         </DockPanel>
                         <!--  About  -->
-                        <StackPanel Margin="0,20" TextElement.FontSize="14">
+                        <StackPanel  Margin="0,20" TextElement.FontSize="{Binding FontSize, Mode=OneWay}">
                             <TextBlock Text="免责声明：本软件免费开源无毒，使用本软件的一切后果概不负责，与本软件作者无关。本软件尊重所有用户的个人隐私，不会窃取任何个人信息。" TextWrapping="Wrap" />
                             <TextBlock Text="感谢ygopro数据库。" TextWrapping="Wrap" />
                             <TextBlock>

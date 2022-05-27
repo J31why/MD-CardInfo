@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MD_CardInfo
@@ -41,6 +42,8 @@ namespace MD_CardInfo
         public static IntPtr pHandle;
         public static int[] CheckCardIndex = new int[] { 0x01E8A1F0, 0xb8, 0, 0x40, 0x10, 0x20, 0x110, 0x34 }; //检查卡片的序号
         public static int[] CheckCardArray = new int[] { 0x01E8A1F0, 0xb8, 0, 0x40, 0x10, 0x20, 0x20, 0x18, 0x48, 0x10, 0x20 }; //检查卡片的数组
+        public static int[] CheckRewardInSolo = new int[] { 0x01E8A1F0, 0xb8, 0, 0x40, 0x10, 0x28, 0x90, 0x40,0x20,0x4C }; //SOLO模式下检查奖励卡片的ID
+
 
         public static int[] DuelCID = new int[] { 0x01E7C600, 0xb8, 0, 0x4c }; //决斗界面
         public static int[] EditCID = new int[] { 0x01E99C18, 0xb8, 0, 0xF8,0x1E0,0x2c }; //编辑界面
@@ -124,25 +127,40 @@ namespace MD_CardInfo
             return -1;
         }
 
-        public static int? GetCardCID()
+        public static  int? GetCardCID()
         {
+            static bool CheckID(int? id)
+            {
+                return id != null && id.Value > 4000 && id.Value < 30000;
+            }
             var id = ReadInt(DuelCID);
-            if (id != null) return id;
+            if (CheckID(id)) return id;
+
+            id = ReadInt(CheckRewardInSolo);
+            if (CheckID(id)) return id;
 
             var index = ReadInt(CheckCardIndex);
             if (index != null)
             {
+                if (index == 0)
+                {
+                    Thread.Sleep(100);
+                    index = ReadInt(CheckCardIndex);
+                    if (index == null) goto Continue;
+                }
                 var addrs = (int[])CheckCardArray.Clone();
                 addrs[addrs.Length - 1] = (int)(CheckCardArray[CheckCardArray.Length - 1] + index * 4);
                 id = ReadInt(addrs);
-                return id;
+                if (CheckID(id)) return id;
             }
-
+            Continue:
             id = ReadInt(EditCID);
-            if (id != null) return id;
+            if (CheckID(id)) return id;
 
             id = ReadInt(ViewCID);
-            if (id != null) return id;
+            if (CheckID(id)) return id;
+
+
 
             return null;
         }
