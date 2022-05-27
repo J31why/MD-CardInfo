@@ -8,6 +8,9 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 本软件不会主动修改任何游戏内存，仅读取内存难以被认定为作弊。
 
+tip1：右键窗口可以切换界面。
+tip2：替换目录下的bg.png可以更换窗口背景图。
+
 [作者主页](https://www.acfun.cn/u/353448) 
 
 [github](https://github.com/J31why/MD-CardInfo) | [github下载](https://github.com/J31why/MD-CardInfo/releases/)
@@ -36,10 +39,10 @@ net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
 
 
 # 图片
-![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image3.png?raw=true)
-
-![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image4.png?raw=true)
+![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image1.png?raw=true)
 
 ![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image2.png?raw=true)
 
-![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image1.png?raw=true)
+![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image3.png?raw=true)
+
+![image](https://github.com/J31why/MD-CardInfo/blob/master/MD-CardInfo/image4.png?raw=true)
