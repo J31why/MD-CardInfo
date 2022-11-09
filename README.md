@@ -18,10 +18,6 @@ tip2：替换目录下的bg.png可以更换窗口背景图。
 
 [作者主页](https://www.acfun.cn/u/353448) 
 
-[github](https://github.com/J31why/MD-CardInfo) | [github下载](https://github.com/J31why/MD-CardInfo/releases/)
-
-[蓝奏云下载(推荐)](https://j31why.lanzouj.com/b03cy0ocb) (密码：1234)
-
 # 功能：
 ## 1.卡片信息
 
