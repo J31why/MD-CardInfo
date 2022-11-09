@@ -1,3 +1,5 @@
+# 弃坑了，现在忙起来了，没时间更新了，请大家用别的汉化工具吧
+
 # MD-CardInf
 
 net6.0 WPF开发  游戏王大师决斗（Yu-Gi-Oh! Master Duel）卡查器
